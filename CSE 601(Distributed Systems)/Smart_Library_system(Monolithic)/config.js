@@ -11,24 +11,31 @@ connect.then(()=>{
 })
 
 const userSchema = new mongoose.Schema({
+    id: { type: Number, required: true, unique: true},
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     role: { type: String, required: true }
 });
 
 const bookSchema = new mongoose.Schema({
+    id: { type: Number, required: true, unique: true},
     title: { type: String, required: true },
     author: String,
     isbn: String,
-    availableCopies: { type: Number, default: 1 }
+    copies: { type: Number, default: 1 },
+    available_copies: { type: Number, default: 1 },
+    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date, default: Date.now }
   });
 
   const loanSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book', required: true },
-    issueDate: { type: Date, default: Date.now },
-    returnDate: Date,
-    status: { type: String, enum: ['issued', 'returned'], default: 'issued' }
+    id: { type: Number, required: true, unique: true},
+    user_id: { type: String, required: true },
+    book_id: { type: String, required: true },
+    issue_date: { type: Date, default: Date.now },
+    due_date: Date,
+    return_date: Date,
+    status: { type: String, default: 'none' }
   });
 
   const User = mongoose.model('User', userSchema);
