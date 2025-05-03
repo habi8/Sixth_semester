@@ -22,8 +22,9 @@ const bookSchema = new mongoose.Schema({
     title: { type: String, required: true },
     author: String,
     isbn: String,
-    copies: { type: Number, default: 1 },
-    available_copies: { type: Number, default: 1 },
+    copies: { type: Number},
+    available_copies: { type: Number},
+    borrow_count: {type: Number, default: 0},
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now }
   });
@@ -35,7 +36,8 @@ const bookSchema = new mongoose.Schema({
     issue_date: { type: Date, default: Date.now },
     due_date: Date,
     return_date: Date,
-    status: { type: String, default: 'none' }
+    status: { type: String, default: 'none' },
+    extension_count: { type: Number, default: 0}
   });
 
   const User = mongoose.model('User', userSchema);
