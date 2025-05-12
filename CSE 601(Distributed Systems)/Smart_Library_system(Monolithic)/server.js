@@ -337,49 +337,46 @@ app.get('/api/stats/books/popular', async (req, res) => {
 
 // app.get('/api/stats/users/active', async (req, res) => {
 //   try {
-//     const aggregated = await Loan.aggregate([
+//     const result = await Loan.aggregate([
 //       {
 //         $group: {
-//           _id: "$user_id",
+//           _id: '$user_id',
 //           books_borrowed: { $sum: 1 },
 //           current_borrows: {
-//             $sum: {
-//               $cond: [{ $eq: ["$status", "ACTIVE"] }, 1, 0]
-//             }
+//             $sum: { $cond: [{ $eq: ['$status', 'ACTIVE'] }, 1, 0] }
 //           }
 //         }
 //       },
 //       {
-//         $sort: { books_borrowed: -1 }
-//       },
-//       {
-//         $limit: 5 // or 2, depending on what you want
-//       },
-//       {
-//         $lookup: {
-//           from: "users",
-//           localField: "_id",
-//           foreignField: "id",
-//           as: "user"
+//         $sort: {
+//           books_borrowed: -1,
+//           current_borrows: -1
 //         }
 //       },
+//       { $limit: 2 },
 //       {
-//         $unwind: "$user"
+//         $lookup: {
+//           from: 'users',            
+//           localField: '_id',
+//           foreignField: 'id',          
+//           as: 'user'
+//         }
 //       },
+//       { $unwind: '$user' },
 //       {
 //         $project: {
-//           _id: 0,
-//           user_id: "$_id",
-//           name: "$user.name",
+//           user_id: '$_id',
+//           name: '$user.name',
 //           books_borrowed: 1,
-//           current_borrows: 1
+//           current_borrows: 1,
+//           _id: 0
 //         }
 //       }
 //     ]);
 
-//     res.json(aggregated);
+//     res.json(result);
 //   } catch (err) {
-//     res.status(500).json({ error: 'Failed to fetch active users' });
+//     res.status(500).json({ error: err.message });
 //   }
 // });
 
